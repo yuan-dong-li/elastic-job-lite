@@ -17,23 +17,21 @@
 
 package io.elasticjob.lite.event;
 
-import io.elasticjob.lite.event.rdb.JobEventRdbConfigurationTest;
-import io.elasticjob.lite.event.rdb.JobEventRdbIdentityTest;
-import io.elasticjob.lite.event.rdb.JobEventRdbListenerTest;
-import io.elasticjob.lite.event.rdb.JobEventRdbSearchTest;
-import io.elasticjob.lite.event.rdb.JobEventRdbStorageTest;
+import io.elasticjob.lite.event.rdb.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        JobExecutionEventTest.class, 
+        JobExecutionEventTest.class,
         JobEventBusTest.class, 
         JobEventRdbIdentityTest.class,
         JobEventRdbConfigurationTest.class, 
         JobEventRdbListenerTest.class, 
         JobEventRdbStorageTest.class,
-        JobEventRdbSearchTest.class
+        JobEventRdbSearchTest.class,
+        OrientDBJobEventRdbStorageTest.class,
+        OrientDBJobEventRdbSearchTest.class
     })
 public final class AllEventTests {
 }

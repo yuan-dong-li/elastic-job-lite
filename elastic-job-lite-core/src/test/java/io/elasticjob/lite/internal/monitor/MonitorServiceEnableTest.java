@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 
 public final class MonitorServiceEnableTest extends AbstractBaseStdJobTest {
     
-    private static final int MONITOR_PORT = 9000;
+    private static final int MONITOR_PORT = 9001; //Changed to 9001 as 9000 is used by docker.
     
     public MonitorServiceEnableTest() {
         super(TestSimpleJob.class, MONITOR_PORT);

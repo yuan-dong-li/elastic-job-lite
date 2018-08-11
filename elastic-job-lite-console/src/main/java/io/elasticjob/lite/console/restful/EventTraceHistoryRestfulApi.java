@@ -22,7 +22,10 @@ import io.elasticjob.lite.console.domain.EventTraceDataSourceConfiguration;
 import io.elasticjob.lite.console.service.EventTraceDataSourceConfigurationService;
 import io.elasticjob.lite.console.service.impl.EventTraceDataSourceConfigurationServiceImpl;
 import io.elasticjob.lite.console.util.SessionEventTraceDataSourceConfiguration;
+import io.elasticjob.lite.event.rdb.AbstractJobEventRdbSearch;
+import io.elasticjob.lite.event.rdb.IJobEventRdbSearch;
 import io.elasticjob.lite.event.rdb.JobEventRdbSearch;
+import io.elasticjob.lite.event.rdb.JobEventRdbSearchFactory;
 import io.elasticjob.lite.event.type.JobExecutionEvent;
 import io.elasticjob.lite.event.type.JobStatusTraceEvent;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -35,6 +38,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +50,7 @@ import java.util.Map;
  * 事件追踪历史记录的RESTful API.
  *
  * @author zhangxinguo
+ * @author Brian
  */
 @Path("/event-trace")
 public final class EventTraceHistoryRestfulApi {
@@ -65,11 +70,11 @@ public final class EventTraceHistoryRestfulApi {
     @Path("/execution")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public JobEventRdbSearch.Result<JobExecutionEvent> findJobExecutionEvents(@Context final UriInfo uriInfo) throws ParseException {
+    public JobEventRdbSearch.Result<JobExecutionEvent> findJobExecutionEvents(@Context final UriInfo uriInfo) throws ParseException, SQLException {
         if (!eventTraceDataSourceConfigurationService.loadActivated().isPresent()) {
             return new JobEventRdbSearch.Result<>(0, new ArrayList<JobExecutionEvent>());
         }
-        JobEventRdbSearch jobEventRdbSearch = new JobEventRdbSearch(setUpEventTraceDataSource());
+        IJobEventRdbSearch jobEventRdbSearch = JobEventRdbSearchFactory.getInstance(setUpEventTraceDataSource());
         return jobEventRdbSearch.findJobExecutionEvents(buildCondition(uriInfo, new String[]{"jobName", "ip", "isSuccess"}));
     }
     
@@ -84,11 +89,11 @@ public final class EventTraceHistoryRestfulApi {
     @Path("/status")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public JobEventRdbSearch.Result<JobStatusTraceEvent> findJobStatusTraceEvents(@Context final UriInfo uriInfo) throws ParseException {
+    public JobEventRdbSearch.Result<JobStatusTraceEvent> findJobStatusTraceEvents(@Context final UriInfo uriInfo) throws ParseException, SQLException {
         if (!eventTraceDataSourceConfigurationService.loadActivated().isPresent()) {
             return new JobEventRdbSearch.Result<>(0, new ArrayList<JobStatusTraceEvent>());
         }
-        JobEventRdbSearch jobEventRdbSearch = new JobEventRdbSearch(setUpEventTraceDataSource());
+        IJobEventRdbSearch jobEventRdbSearch = JobEventRdbSearchFactory.getInstance(setUpEventTraceDataSource());
         return jobEventRdbSearch.findJobStatusTraceEvents(buildCondition(uriInfo, new String[]{"jobName", "source", "executionType", "state"}));
     }
     
@@ -122,7 +127,7 @@ public final class EventTraceHistoryRestfulApi {
         if (!Strings.isNullOrEmpty(info.getQueryParameters().getFirst("endTime"))) {
             endTime = simpleDateFormat.parse(info.getQueryParameters().getFirst("endTime"));
         }
-        return new JobEventRdbSearch.Condition(perPage, page, sort, order, startTime, endTime, fields);
+        return new IJobEventRdbSearch.Condition(perPage, page, sort, order, startTime, endTime, fields);
     }
     
     private Map<String, Object> getQueryParameters(final UriInfo info, final String[] params) {

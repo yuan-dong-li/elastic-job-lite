@@ -31,6 +31,6 @@ public final class MonitorServiceDisableTest extends AbstractBaseStdJobTest {
     
     @Test(expected = IOException.class)
     public void assertMonitorWithDumpCommand() throws IOException {
-        SocketUtils.sendCommand(MonitorService.DUMP_COMMAND, 9000);
+        SocketUtils.sendCommand(MonitorService.DUMP_COMMAND, 9001); //Changed to 9001 as 9000 is used by docker.
     }
 }

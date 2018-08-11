@@ -64,6 +64,7 @@
         <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <orientdb.version>2.2.32</orientdb.version>
         
         <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
     </properties>
@@ -551,6 +552,10 @@
     </reporting>
     
     <repositories>
+        <repository>
+            <id>CN</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
         <repository>
             <id>alfresco-maven-repo</id>
             <url>https://maven.alfresco.com/nexus/content/groups/public/</url>

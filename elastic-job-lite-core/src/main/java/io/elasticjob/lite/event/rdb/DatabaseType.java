@@ -27,10 +27,12 @@ import java.util.Arrays;
  * 支持的数据库类型.
  * 
  * @author caohao
+ * @author Brian
  */
 public enum DatabaseType {
-    
-    H2("H2"), MySQL("MySQL"), Oracle("Oracle"), SQLServer("Microsoft SQL Server"), DB2("DB2"), PostgreSQL("PostgreSQL");
+
+    //Added support for OrientDB.
+    H2("H2"), MySQL("MySQL"), Oracle("Oracle"), SQLServer("Microsoft SQL Server"), DB2("DB2"), PostgreSQL("PostgreSQL"), OrientDB("OrientDB");
     
     private final String productName;
     

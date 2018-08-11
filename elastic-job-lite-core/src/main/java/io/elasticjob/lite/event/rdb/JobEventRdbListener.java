@@ -22,19 +22,21 @@ import io.elasticjob.lite.event.type.JobExecutionEvent;
 import io.elasticjob.lite.event.type.JobStatusTraceEvent;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * 运行痕迹事件数据库监听器.
  *
  * @author caohao
+ * @author Brian
  */
 public final class JobEventRdbListener extends JobEventRdbIdentity implements JobEventListener {
     
-    private final JobEventRdbStorage repository;
+    private final IJobEventRdbStorage repository;
     
     public JobEventRdbListener(final DataSource dataSource) throws SQLException {
-        repository = new JobEventRdbStorage(dataSource);
+        repository = JobEventRdbStorageFactory.getInstance(dataSource);
     }
     
     @Override

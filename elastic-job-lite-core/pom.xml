@@ -91,5 +91,10 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.orientechnologies</groupId>
+            <artifactId>orientdb-jdbc</artifactId>
+            <version>${orientdb.version}</version>
+        </dependency>
     </dependencies>
 </project>
