@@ -122,7 +122,12 @@ public final class OrientDBJobEventRdbSearch extends AbstractJobEventRdbSearch {
         if (null != condition.getFields() && !condition.getFields().isEmpty()) {
             for (Map.Entry<String, Object> entry : condition.getFields().entrySet()) {
                 if (null != entry.getValue() && tableFields.contains(entry.getKey())) {
-                    preparedStatement.setString(index++, String.valueOf(entry.getValue()));
+                    if("isSuccess".equals(entry.getKey())) {
+                        String val = String.valueOf(entry.getValue());
+                        preparedStatement.setBoolean(index++, ("1".equals(val) || "true".equals(val))? true: false);
+                    } else {
+                        preparedStatement.setString(index++, String.valueOf(entry.getValue()));
+                    }
                 }
             }
         }
