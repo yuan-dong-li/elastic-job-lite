@@ -27,7 +27,7 @@ public class OrientDBJobEventRdbSearchTest {
     @BeforeClass
     public static void setUpClass() throws SQLException {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(org.h2.Driver.class.getName());
+        dataSource.setDriverClassName(com.orientechnologies.orient.jdbc.OrientJdbcDriver.class.getName());
         dataSource.setUrl("jdbc:orient:remote:localhost/mes");
         dataSource.setUsername("root");
         dataSource.setPassword("Sailheader&Mes@2018");
